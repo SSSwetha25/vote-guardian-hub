@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth";
 import { VoteCard } from "@/components/VoteCard";
 
 const sampleQuestion = {
+  id: "q1",
   question: "What's your favorite programming language?",
   options: [
     { id: "1", text: "JavaScript" },
@@ -28,6 +29,7 @@ export default function Vote() {
     <div className="min-h-screen py-20 px-4">
       <div className="container mx-auto mt-16">
         <VoteCard
+          questionId={sampleQuestion.id}
           question={sampleQuestion.question}
           options={sampleQuestion.options}
         />
