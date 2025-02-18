@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 import { VoteCard } from "@/components/VoteCard";
-import { Users, ListChecks, Vote } from "lucide-react";
+import { Users, ListChecks, Vote as VoteIcon } from "lucide-react";
 
 const sampleQuestion = {
   id: "q1",
@@ -32,7 +32,7 @@ export default function Vote() {
         {/* Page Header */}
         <div className="max-w-3xl mx-auto mb-16 text-center animate-fadeIn">
           <div className="inline-block p-3 rounded-full bg-primary/10 text-primary mb-4">
-            <Vote className="w-8 h-8" />
+            <VoteIcon className="w-8 h-8" />
           </div>
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
             Online Voting System
