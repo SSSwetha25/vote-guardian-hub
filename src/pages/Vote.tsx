@@ -26,7 +26,7 @@ export default function Vote() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="min-h-screen py-20 px-4">
+    <div className="min-h-screen py-20 px-4 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto mt-16">
         <VoteCard
           questionId={sampleQuestion.id}
