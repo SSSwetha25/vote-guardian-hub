@@ -102,14 +102,14 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
               className={`w-full p-5 rounded-lg transition-all duration-300 transform hover:scale-[1.02] ${
                 selectedOption === option.id
                   ? "bg-primary/10 border-primary shadow-md translate-y-[-2px]"
-                  : "bg-white border-gray-200 hover:bg-gray-50 hover:border-primary/30"
+                  : "bg-white/50 border-gray-200 hover:bg-gray-50/80 hover:border-primary/30"
               } border-2 ${hasVoted ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
               disabled={hasVoted}
             >
               <div className="flex items-center gap-3">
-                <div className={`w-4 h-4 rounded-full border-2 ${
+                <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
                   selectedOption === option.id 
-                    ? "border-primary bg-primary" 
+                    ? "border-primary bg-primary scale-110" 
                     : "border-gray-300"
                 }`} />
                 <span className="text-lg">{option.text}</span>
@@ -121,7 +121,7 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
             <Button
               onClick={handleVote}
               className={`w-full py-6 text-lg font-medium transition-all duration-300 ${
-                hasVoted ? "bg-green-600" : "hover:scale-[1.02]"
+                hasVoted ? "bg-green-600" : "hover:scale-[1.02] shadow-lg hover:shadow-xl"
               }`}
               disabled={!selectedOption || hasVoted}
             >
@@ -140,7 +140,7 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
             </Button>
             
             {hasVoted && (
-              <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-500">
+              <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-500 animate-fadeIn">
                 <AlertCircle className="w-4 h-4" />
                 <p>Results will be displayed when the election ends</p>
               </div>
@@ -149,7 +149,7 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
         </div>
       ) : (
         <div className="space-y-6 animate-fadeIn">
-          <div className="p-6 rounded-lg bg-primary/10">
+          <div className="p-6 rounded-lg bg-primary/10 backdrop-blur-sm">
             <div className="flex items-center justify-center gap-2 mb-3">
               <BarChart2 className="w-5 h-5 text-primary" />
               <h4 className="text-xl font-bold text-gray-800">Final Results</h4>
@@ -163,14 +163,14 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
             <div key={option.id} 
               className={`p-4 rounded-lg border-2 transition-all duration-500 animate-slideIn ${
                 index === 0 && option.percentage > 0 
-                  ? "border-primary/30 bg-primary/5" 
-                  : "border-gray-100"
+                  ? "border-primary/30 bg-primary/5 shadow-lg" 
+                  : "border-gray-100 hover:border-gray-200"
               }`}
             >
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center gap-2">
                   {index === 0 && option.percentage > 0 && (
-                    <Award className="w-5 h-5 text-primary" />
+                    <Award className="w-5 h-5 text-primary animate-pulse" />
                   )}
                   <span className="font-medium">{option.text}</span>
                 </div>
@@ -180,7 +180,7 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
               </div>
               <Progress 
                 value={option.percentage} 
-                className="h-3 rounded-full"
+                className="h-3 rounded-full transition-all duration-500"
               />
             </div>
           ))}
