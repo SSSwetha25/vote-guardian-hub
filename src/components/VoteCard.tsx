@@ -1,5 +1,5 @@
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/lib/auth";
@@ -18,12 +18,13 @@ interface VoteCardProps {
 
 export function VoteCard({ question, questionId, options }: VoteCardProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [showResults, setShowResults] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<string>("");
   const { toast } = useToast();
-  const { user, addVote, getVotesForQuestion } = useAuth();
+  const { user, addVote, getVotesForQuestion, electionTiming, checkElectionStatus } = useAuth();
 
   const votes = getVotesForQuestion(questionId);
   const hasVoted = votes.some((vote) => vote.voterId === user?.id);
+  const isElectionOver = checkElectionStatus();
 
   const results = useMemo(() => {
     const totalVotes = votes.length;
@@ -38,8 +39,32 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
     });
   }, [votes, options]);
 
+  useEffect(() => {
+    const updateTimer = () => {
+      const now = new Date();
+      const timeDiff = electionTiming.endTime.getTime() - now.getTime();
+      
+      if (timeDiff <= 0) {
+        setTimeLeft("Election Ended");
+        checkElectionStatus();
+        return;
+      }
+
+      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(interval);
+  }, [electionTiming.endTime, checkElectionStatus]);
+
   const handleVote = () => {
-    if (selectedOption && !hasVoted) {
+    if (selectedOption && !hasVoted && !isElectionOver) {
       addVote({
         questionId,
         optionId: selectedOption,
@@ -49,20 +74,19 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
         title: "Vote Submitted!",
         description: "Your vote has been successfully recorded.",
       });
-      
-      setShowResults(true);
     }
-  };
-
-  const toggleResults = () => {
-    setShowResults(!showResults);
   };
 
   return (
     <div className="w-full max-w-lg mx-auto p-8 glass-card rounded-xl fade-in">
-      <h3 className="text-xl font-semibold mb-6">{question}</h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-semibold">{question}</h3>
+        <div className="text-sm font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
+          {timeLeft}
+        </div>
+      </div>
       
-      {!showResults ? (
+      {!isElectionOver ? (
         <div className="space-y-3">
           {options.map((option) => (
             <button
@@ -78,9 +102,27 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
               {option.text}
             </button>
           ))}
+          <Button
+            onClick={handleVote}
+            className="w-full mt-6 btn-primary"
+            disabled={!selectedOption || hasVoted}
+          >
+            {hasVoted ? "Vote Submitted" : "Submit Vote"}
+          </Button>
+          {hasVoted && (
+            <p className="text-sm text-center text-gray-500 mt-4">
+              Results will be displayed when the election ends
+            </p>
+          )}
         </div>
       ) : (
         <div className="space-y-4">
+          <div className="p-4 mb-4 bg-primary/10 rounded-lg">
+            <h4 className="font-semibold text-center mb-2">Election Results</h4>
+            <p className="text-sm text-center text-gray-600">
+              Total Votes Cast: {votes.length}
+            </p>
+          </div>
           {results.map((option) => (
             <div key={option.id} className="space-y-2">
               <div className="flex justify-between items-center">
@@ -92,30 +134,8 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
               <Progress value={option.percentage} className="h-2" />
             </div>
           ))}
-          <p className="text-sm text-gray-500 text-center mt-4">
-            Total Votes: {votes.length}
-          </p>
         </div>
       )}
-
-      <div className="flex gap-4 mt-6">
-        {!hasVoted ? (
-          <Button
-            onClick={handleVote}
-            className="flex-1 btn-primary"
-            disabled={!selectedOption || hasVoted}
-          >
-            Submit Vote
-          </Button>
-        ) : (
-          <Button
-            onClick={toggleResults}
-            className="flex-1 btn-primary"
-          >
-            {showResults ? "Hide Results" : "Show Results"}
-          </Button>
-        )}
-      </div>
     </div>
   );
 }
