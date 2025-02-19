@@ -35,15 +35,28 @@ export const useAuth = create<AuthState>((set, get) => ({
     endTime: defaultEndTime,
     isOver: false,
   },
-  login: (name: string) =>
+  login: (name: string) => {
+    // Generate a consistent ID for the same name to prevent duplicate voting
+    const id = btoa(name).slice(0, 9); // Using base64 encoding of name as a simple way to generate consistent IDs
     set({
       isAuthenticated: true,
-      user: { id: Math.random().toString(36).substr(2, 9), name },
-    }),
+      user: { id, name },
+    });
+  },
   logout: () => set({ isAuthenticated: false, user: null }),
   addVote: (vote) => {
     const { user, electionTiming } = get();
     if (!user || electionTiming.isOver) return;
+
+    // Check if user has already voted for this question
+    const existingVote = get().votes.find(
+      v => v.questionId === vote.questionId && v.voterId === user.id
+    );
+
+    if (existingVote) {
+      console.log('User has already voted for this question');
+      return;
+    }
     
     set((state) => ({
       votes: [...state.votes, { ...vote, voterId: user.id }],
