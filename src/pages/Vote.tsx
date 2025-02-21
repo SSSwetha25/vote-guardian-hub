@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
@@ -36,19 +37,19 @@ export default function Vote() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-purple-50/30">
       <div className="container mx-auto px-4 py-12">
-        <div className="pt-16">
+        <div className="pt-20">
           {/* Blockchain Status Banner */}
-          <div className="max-w-3xl mx-auto mb-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
+          <div className="max-w-3xl mx-auto mb-8 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100 shadow-lg shadow-blue-100/20">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Link className="w-5 h-5 text-blue-500 animate-pulse" />
-                <p className="text-blue-700 text-sm">
+                <p className="text-blue-700 text-sm font-medium">
                   Connected to Blockchain Network
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-sm text-blue-600">
+              <div className="flex items-center gap-2 text-sm text-blue-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">
                 <Database className="w-4 h-4" />
                 <span>Latest Block: #14,532</span>
               </div>
@@ -56,11 +57,11 @@ export default function Vote() {
           </div>
 
           {/* Info Banner */}
-          <div className="max-w-3xl mx-auto mb-8 p-4 bg-emerald-50 rounded-lg border border-emerald-100 flex items-center gap-3">
+          <div className="max-w-3xl mx-auto mb-8 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-100 flex items-center gap-3 shadow-lg shadow-emerald-100/20">
             <Info className="w-5 h-5 text-emerald-500" />
             <p className="text-emerald-700 text-sm">
               Your vote will be cryptographically secured on the blockchain. Learn more about our{" "}
-              <button onClick={showVotingRules} className="text-emerald-600 underline hover:text-emerald-800">
+              <button onClick={showVotingRules} className="text-emerald-600 underline hover:text-emerald-800 font-medium">
                 voting protocol
               </button>
             </p>
@@ -68,19 +69,19 @@ export default function Vote() {
 
           {/* Page Header */}
           <div className="max-w-3xl mx-auto mb-16 text-center animate-fadeIn">
-            <div className="inline-block p-3 rounded-full bg-primary/10 text-primary mb-4">
+            <div className="inline-block p-3 rounded-full bg-gradient-to-br from-primary/20 to-purple-400/20 text-primary mb-4">
               <VoteIcon className="w-8 h-8" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4">
               Blockchain Voting System
             </h1>
             <p className="text-gray-600 text-lg mb-8">
-              Welcome back, {user?.name}! Your vote will be securely recorded on the blockchain.
+              Welcome back, <span className="font-medium text-primary">{user?.name}</span>! Your vote will be securely recorded on the blockchain.
             </p>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-12">
-              <div className="p-6 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="p-6 rounded-xl bg-gradient-to-br from-white to-purple-50/50 backdrop-blur-sm border border-purple-100/50 shadow-xl shadow-purple-100/20 hover:shadow-2xl hover:shadow-purple-100/30 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-2">
                   <Users className="w-5 h-5 text-primary" />
                   <h3 className="font-semibold text-gray-700">Verified Voters</h3>
@@ -89,7 +90,7 @@ export default function Vote() {
                 <p className="text-sm text-gray-500 mt-1">Registered on blockchain</p>
               </div>
 
-              <div className="p-6 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="p-6 rounded-xl bg-gradient-to-br from-white to-blue-50/50 backdrop-blur-sm border border-blue-100/50 shadow-xl shadow-blue-100/20 hover:shadow-2xl hover:shadow-blue-100/30 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-2">
                   <Link className="w-5 h-5 text-primary" />
                   <h3 className="font-semibold text-gray-700">Blockchain Status</h3>
@@ -98,7 +99,7 @@ export default function Vote() {
                 <p className="text-sm text-gray-500 mt-1">Network consensus achieved</p>
               </div>
 
-              <div className="p-6 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="p-6 rounded-xl bg-gradient-to-br from-white to-green-50/50 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 hover:shadow-2xl hover:shadow-green-100/30 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-2">
                   <Activity className="w-5 h-5 text-primary" />
                   <h3 className="font-semibold text-gray-700">Confirmation Rate</h3>
@@ -110,17 +111,17 @@ export default function Vote() {
 
             {/* System Status */}
             <div className="flex flex-wrap justify-center gap-4 mb-12">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 border border-green-100">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 border border-green-100 shadow-sm">
                 <Shield className="w-4 h-4" />
-                <span className="text-sm">Cryptographically Secured</span>
+                <span className="text-sm font-medium">Cryptographically Secured</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-100 shadow-sm">
                 <Lock className="w-4 h-4" />
-                <span className="text-sm">Zero-Knowledge Proof</span>
+                <span className="text-sm font-medium">Zero-Knowledge Proof</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-50 to-fuchsia-50 text-purple-700 border border-purple-100 shadow-sm">
                 <Link className="w-4 h-4" />
-                <span className="text-sm">Consensus Active</span>
+                <span className="text-sm font-medium">Consensus Active</span>
               </div>
             </div>
           </div>
@@ -133,7 +134,7 @@ export default function Vote() {
           />
 
           {/* Help Section */}
-          <div className="max-w-2xl mx-auto mt-16 p-6 rounded-xl bg-gray-50 border border-gray-100">
+          <div className="max-w-2xl mx-auto mt-16 p-6 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-100 shadow-lg">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Technical Support</h3>
             <p className="text-gray-600 mb-4">
               Having issues with the blockchain voting process or need help understanding how it works?
@@ -142,7 +143,7 @@ export default function Vote() {
             <Button variant="outline" onClick={() => toast({
               title: "Support Request Submitted",
               description: "A blockchain specialist will contact you shortly.",
-            })}>
+            })} className="bg-white hover:bg-gray-50">
               Contact Support
             </Button>
           </div>
@@ -152,9 +153,9 @@ export default function Vote() {
             <p>© 2024 Blockchain Voting System. All rights reserved.</p>
             <p className="mt-2">Decentralized • Transparent • Immutable</p>
             <div className="flex justify-center gap-4 mt-4">
-              <button className="text-gray-500 hover:text-gray-700">Smart Contract</button>
-              <button className="text-gray-500 hover:text-gray-700">Network Status</button>
-              <button className="text-gray-500 hover:text-gray-700">FAQ</button>
+              <button className="text-gray-500 hover:text-primary transition-colors">Smart Contract</button>
+              <button className="text-gray-500 hover:text-primary transition-colors">Network Status</button>
+              <button className="text-gray-500 hover:text-primary transition-colors">FAQ</button>
             </div>
           </footer>
         </div>
