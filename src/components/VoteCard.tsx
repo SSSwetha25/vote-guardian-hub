@@ -1,4 +1,3 @@
-
 import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -19,6 +18,7 @@ interface VoteCardProps {
 
 export function VoteCard({ question, questionId, options }: VoteCardProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [timeLeft, setTimeLeft] = useState<string>("");
   const { toast } = useToast();
   const { user, addVote, getVotesForQuestion, electionTiming, checkElectionStatus } = useAuth();
@@ -64,17 +64,34 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
     return () => clearInterval(interval);
   }, [electionTiming.endTime, checkElectionStatus]);
 
-  const handleVote = () => {
+  const handleVote = async () => {
     if (selectedOption && !hasVoted && !isElectionOver) {
-      addVote({
+      setIsProcessing(true);
+      
+      toast({
+        title: "Processing Vote",
+        description: "Your vote is being added to the blockchain...",
+      });
+
+      const success = await addVote({
         questionId,
         optionId: selectedOption,
       });
-      
-      toast({
-        title: "Vote Submitted!",
-        description: "Your vote has been successfully recorded.",
-      });
+
+      if (success) {
+        toast({
+          title: "Vote Confirmed!",
+          description: "Your vote has been successfully recorded on the blockchain.",
+        });
+      } else {
+        toast({
+          title: "Vote Failed",
+          description: "There was an error recording your vote. Please try again.",
+          variant: "destructive",
+        });
+      }
+
+      setIsProcessing(false);
     }
   };
 
@@ -98,13 +115,13 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
           {options.map((option) => (
             <button
               key={option.id}
-              onClick={() => !hasVoted && setSelectedOption(option.id)}
+              onClick={() => !hasVoted && !isProcessing && setSelectedOption(option.id)}
               className={`w-full p-5 rounded-lg transition-all duration-300 transform hover:scale-[1.02] ${
                 selectedOption === option.id
                   ? "bg-primary/10 border-primary shadow-md translate-y-[-2px]"
                   : "bg-white/50 border-gray-200 hover:bg-gray-50/80 hover:border-primary/30"
-              } border-2 ${hasVoted ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
-              disabled={hasVoted}
+              } border-2 ${hasVoted || isProcessing ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+              disabled={hasVoted || isProcessing}
             >
               <div className="flex items-center gap-3">
                 <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
@@ -123,17 +140,22 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
               className={`w-full py-6 text-lg font-medium transition-all duration-300 ${
                 hasVoted ? "bg-green-600" : "hover:scale-[1.02] shadow-lg hover:shadow-xl"
               }`}
-              disabled={!selectedOption || hasVoted}
+              disabled={!selectedOption || hasVoted || isProcessing}
             >
               <div className="flex items-center justify-center gap-2">
-                {hasVoted ? (
+                {isProcessing ? (
+                  <>
+                    <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                    <span>Mining Block...</span>
+                  </>
+                ) : hasVoted ? (
                   <>
                     <CheckCircle className="w-5 h-5" />
-                    <span>Vote Submitted</span>
+                    <span>Vote Confirmed</span>
                   </>
                 ) : (
                   <>
-                    {selectedOption ? "Submit Vote" : "Select an option"}
+                    {selectedOption ? "Sign & Submit Vote" : "Select an option"}
                   </>
                 )}
               </div>
@@ -142,7 +164,7 @@ export function VoteCard({ question, questionId, options }: VoteCardProps) {
             {hasVoted && (
               <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-500 animate-fadeIn">
                 <AlertCircle className="w-4 h-4" />
-                <p>Results will be displayed when the election ends</p>
+                <p>Transaction confirmed in latest block</p>
               </div>
             )}
           </div>
