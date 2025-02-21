@@ -131,7 +131,13 @@ export default function Vote() {
             </div>
           </div>
 
-          <div className="max-w-3xl mx-auto mb-8">
+          <VoteCard
+            questionId={sampleQuestion.id}
+            question={sampleQuestion.question}
+            options={sampleQuestion.options}
+          />
+
+          <div className="max-w-3xl mx-auto mb-8 mt-8">
             <div className="p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-gray-100 shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-800">Recent Transactions</h3>
@@ -182,12 +188,6 @@ export default function Vote() {
               </p>
             </div>
           </div>
-
-          <VoteCard
-            questionId={sampleQuestion.id}
-            question={sampleQuestion.question}
-            options={sampleQuestion.options}
-          />
 
           <div className="max-w-2xl mx-auto mt-16 p-6 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-100 shadow-lg">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Technical Support</h3>
