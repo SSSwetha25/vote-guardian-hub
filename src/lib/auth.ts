@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { sha256 } from 'crypto-js'; // We'll simulate blockchain hashing
+import { SHA256 } from 'crypto-js'; // Changed from sha256 to SHA256
 
 interface Block {
   hash: string;
@@ -40,7 +40,7 @@ interface AuthState {
 const defaultEndTime = new Date(Date.now() + 60 * 60 * 1000);
 
 const calculateHash = (block: Omit<Block, 'hash'>) => {
-  return sha256(
+  return SHA256( // Changed from sha256 to SHA256
     block.previousHash +
     block.timestamp +
     JSON.stringify(block.data) +
@@ -72,8 +72,8 @@ export const useAuth = create<AuthState>((set, get) => ({
     isOver: false,
   },
   login: (name: string) => {
-    const id = sha256(name).toString().slice(0, 12);
-    const walletAddress = '0x' + sha256(id).toString().slice(0, 40);
+    const id = SHA256(name).toString().slice(0, 12); // Changed from sha256 to SHA256
+    const walletAddress = '0x' + SHA256(id).toString().slice(0, 40); // Changed from sha256 to SHA256
     set({
       isAuthenticated: true,
       user: { id, name, walletAddress },
@@ -97,7 +97,7 @@ export const useAuth = create<AuthState>((set, get) => ({
 
     // Create new vote with blockchain characteristics
     const timestamp = Date.now();
-    const transactionHash = sha256(
+    const transactionHash = SHA256( // Changed from sha256 to SHA256
       user.id + vote.questionId + vote.optionId + timestamp
     ).toString();
 
