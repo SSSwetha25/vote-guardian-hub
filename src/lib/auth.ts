@@ -1,8 +1,8 @@
 
 import { create } from 'zustand';
-import { SHA256 } from 'crypto-js'; // Changed from sha256 to SHA256
+import { SHA256 } from 'crypto-js';
 
-interface Block {
+export interface Block {
   hash: string;
   previousHash: string;
   timestamp: number;
@@ -40,7 +40,7 @@ interface AuthState {
 const defaultEndTime = new Date(Date.now() + 60 * 60 * 1000);
 
 const calculateHash = (block: Omit<Block, 'hash'>) => {
-  return SHA256( // Changed from sha256 to SHA256
+  return SHA256(
     block.previousHash +
     block.timestamp +
     JSON.stringify(block.data) +
@@ -72,8 +72,8 @@ export const useAuth = create<AuthState>((set, get) => ({
     isOver: false,
   },
   login: (name: string) => {
-    const id = SHA256(name).toString().slice(0, 12); // Changed from sha256 to SHA256
-    const walletAddress = '0x' + SHA256(id).toString().slice(0, 40); // Changed from sha256 to SHA256
+    const id = SHA256(name).toString().slice(0, 12);
+    const walletAddress = '0x' + SHA256(id).toString().slice(0, 40);
     set({
       isAuthenticated: true,
       user: { id, name, walletAddress },
@@ -84,7 +84,6 @@ export const useAuth = create<AuthState>((set, get) => ({
     const { user, blockchain, electionTiming } = get();
     if (!user || electionTiming.isOver) return false;
 
-    // Check if user has already voted
     const existingVote = get().blockchain.find(
       block => block.data.questionId === vote.questionId && 
                block.data.voterId === user.id
@@ -95,9 +94,8 @@ export const useAuth = create<AuthState>((set, get) => ({
       return false;
     }
 
-    // Create new vote with blockchain characteristics
     const timestamp = Date.now();
-    const transactionHash = SHA256( // Changed from sha256 to SHA256
+    const transactionHash = SHA256(
       user.id + vote.questionId + vote.optionId + timestamp
     ).toString();
 
@@ -108,23 +106,19 @@ export const useAuth = create<AuthState>((set, get) => ({
       transactionHash
     };
 
-    // Simulate blockchain mining delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Create new block
     const previousBlock = get().blockchain[get().blockchain.length - 1];
     const newBlock: Block = {
       previousHash: previousBlock.hash,
       timestamp: Date.now(),
       data: newVote,
       nonce: Math.floor(Math.random() * 1000000),
-      hash: '' // Will be calculated
+      hash: ''
     };
 
-    // Calculate hash
     newBlock.hash = calculateHash(newBlock);
 
-    // Add block to chain
     set(state => ({
       blockchain: [...state.blockchain, newBlock]
     }));
