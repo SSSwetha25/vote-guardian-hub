@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
-import { VoteCard } from "@/components/VoteCard";
-import { Vote as VoteIcon } from "lucide-react";
+import { Vote as VoteIcon, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { BlockchainStatusBanner } from "@/components/vote/BlockchainStatusBanner";
 import { VotingInfoBanner } from "@/components/vote/VotingInfoBanner";
 import { VoteStats } from "@/components/vote/VoteStats";
@@ -12,17 +12,6 @@ import { VoteCountdown } from "@/components/vote/VoteCountdown";
 import { TransactionHistory } from "@/components/vote/TransactionHistory";
 import { TechnicalSupport } from "@/components/vote/TechnicalSupport";
 import { VoteFooter } from "@/components/vote/VoteFooter";
-
-const sampleQuestion = {
-  id: "q1",
-  question: "What's your favorite programming language?",
-  options: [
-    { id: "1", text: "JavaScript" },
-    { id: "2", text: "Python" },
-    { id: "3", text: "Java" },
-    { id: "4", text: "C++" },
-  ],
-};
 
 export default function Vote() {
   const { isAuthenticated, user, blockchain } = useAuth();
@@ -55,15 +44,19 @@ export default function Vote() {
 
             <VoteStats progress={progress} />
             <SystemStatus />
+
+            <div className="mt-8">
+              <Button 
+                onClick={() => navigate("/vote-question")}
+                className="w-full max-w-md py-6 text-lg font-medium transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl"
+              >
+                Cast Your Vote
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
           </div>
 
           <VoteCountdown />
-
-          <VoteCard
-            questionId={sampleQuestion.id}
-            question={sampleQuestion.question}
-            options={sampleQuestion.options}
-          />
 
           {blockchain && <TransactionHistory blockchain={blockchain} />}
           <TechnicalSupport />
