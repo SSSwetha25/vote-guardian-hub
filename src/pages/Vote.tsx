@@ -65,7 +65,7 @@ export default function Vote() {
             options={sampleQuestion.options}
           />
 
-          <TransactionHistory blockchain={blockchain} />
+          {blockchain && <TransactionHistory blockchain={blockchain} />}
           <TechnicalSupport />
           <VoteFooter />
         </div>
