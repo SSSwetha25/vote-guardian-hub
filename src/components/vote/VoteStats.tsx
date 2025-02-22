@@ -1,5 +1,5 @@
 
-import { Users, Link, Activity } from "lucide-react";
+import { ShieldCheck, Link, Activity } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface VoteStatsProps {
@@ -21,11 +21,11 @@ export function VoteStats({ progress }: VoteStatsProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-12">
         <div className="p-6 rounded-xl bg-gradient-to-br from-white to-purple-50/50 backdrop-blur-sm border border-purple-100/50 shadow-xl shadow-purple-100/20 hover:shadow-2xl hover:shadow-purple-100/30 transition-all duration-300">
           <div className="flex items-center gap-3 mb-2">
-            <Users className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold text-gray-700">Verified Voters</h3>
+            <ShieldCheck className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold text-gray-700">Security Level</h3>
           </div>
-          <p className="text-2xl font-bold text-gray-900">127</p>
-          <p className="text-sm text-gray-500 mt-1">Registered on blockchain</p>
+          <p className="text-2xl font-bold text-gray-900">Maximum</p>
+          <p className="text-sm text-gray-500 mt-1">256-bit encryption</p>
         </div>
 
         <div className="p-6 rounded-xl bg-gradient-to-br from-white to-blue-50/50 backdrop-blur-sm border border-blue-100/50 shadow-xl shadow-blue-100/20 hover:shadow-2xl hover:shadow-blue-100/30 transition-all duration-300">

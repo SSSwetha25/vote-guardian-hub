@@ -1,6 +1,6 @@
 
 import { History, Activity } from "lucide-react";
-import { Block } from "@/lib/auth";
+import type { Block } from "@/lib/auth";
 
 interface TransactionHistoryProps {
   blockchain: Block[];
