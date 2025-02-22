@@ -6,7 +6,6 @@ import { Vote as VoteIcon, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BlockchainStatusBanner } from "@/components/vote/BlockchainStatusBanner";
 import { VotingInfoBanner } from "@/components/vote/VotingInfoBanner";
-import { VoteStats } from "@/components/vote/VoteStats";
 import { SystemStatus } from "@/components/vote/SystemStatus";
 import { VoteCountdown } from "@/components/vote/VoteCountdown";
 import { TransactionHistory } from "@/components/vote/TransactionHistory";
@@ -16,7 +15,6 @@ import { VoteFooter } from "@/components/vote/VoteFooter";
 export default function Vote() {
   const { isAuthenticated, user, blockchain } = useAuth();
   const navigate = useNavigate();
-  const [progress, setProgress] = useState(45);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -29,6 +27,7 @@ export default function Vote() {
       <div className="container mx-auto px-4 py-12">
         <div className="pt-20">
           <BlockchainStatusBanner />
+          <VoteCountdown />
           <VotingInfoBanner />
 
           <div className="max-w-3xl mx-auto mb-16 text-center animate-fadeIn">
@@ -42,7 +41,6 @@ export default function Vote() {
               Welcome back, <span className="font-medium text-primary">{user?.name}</span>! Your vote will be securely recorded on the blockchain.
             </p>
 
-            <VoteStats progress={progress} />
             <SystemStatus />
 
             <div className="mt-8">
@@ -55,8 +53,6 @@ export default function Vote() {
               </Button>
             </div>
           </div>
-
-          <VoteCountdown />
 
           {blockchain && <TransactionHistory blockchain={blockchain} />}
           <TechnicalSupport />
