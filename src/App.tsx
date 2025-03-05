@@ -7,6 +7,7 @@ import VoteQuestion from "@/pages/VoteQuestion";
 import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
 import { Header } from "@/components/Header";
+import { ChatbotModal } from "@/components/vote/ChatbotModal";
 
 import "./App.css";
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ChatbotModal />
       <Toaster />
     </Router>
   );
